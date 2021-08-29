@@ -70,12 +70,19 @@ class DataLoader:
         # ref iterators for each split
         self.split_ix = {}
         self.iterators = {}
+        cnt_ref_data = 0
         for ref_id in self.Refs:
             split = self.Refs[ref_id]['split']
             if split not in self.split_ix:
                 self.split_ix[split] = []
                 self.iterators[split] = 0
-            self.split_ix[split].append(ref_id)
+            if (split=='train'):
+                if (cnt_ref_data < 40):     # load small fraction of the train data
+                    self.split_ix[split].append(ref_id) 
+                    cnt_ref_data += 1
+            else:
+                self.split_ix[split].append(ref_id)
+            
         for split in self.split_ix:
             print('assigned {} refs to split {}'.format(len(self.split_ix[split]), split))
             

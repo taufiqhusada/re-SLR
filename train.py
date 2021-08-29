@@ -101,7 +101,7 @@ def train_all(params):
     val_acc_history = []
     val_rank_acc_history = []
     min_val_loss = 100
-    while True:
+    while epoch < 25:
         chainer.config.train = True
         chainer.config.enable_backprop = True
         ve.zerograds()
@@ -157,7 +157,8 @@ def train_all(params):
         lm_optim.update()
         
         if data['bounds']['wrapped']:
-            print('one epoch finished!')
+            print('{} epoch finished!'.format(epoch))
+            epoch += 1
             loader.shuffle('train')
             
         if params['check_sent']:

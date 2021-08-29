@@ -90,7 +90,7 @@ def train_vl(params):
     val_rank_acc_history = []
     min_val_loss = 100
     max_acc = 0
-    while True:
+    while epoch < 25:
         chainer.config.train = True
         chainer.config.enable_backprop = True
         ve.zerograds()

@@ -35,7 +35,7 @@ def parse_opt():
     parser.add_argument('--optim_epsilon', type=float, default=1e-8)
     parser.add_argument('--losses_log_every', type=int, default=25)
     parser.add_argument('--max_iter', type=int, default=-1)
-    parser.add_argument('--save_checkpoint_every', type=int, default=2000)
+    parser.add_argument('--save_checkpoint_every', type=int, default=25) #250
     # language encoder
     parser.add_argument('--learning_rate', type=float, default=4e-4)
     parser.add_argument('--optim_alpha', type=float, default=0.8)
