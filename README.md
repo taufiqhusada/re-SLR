@@ -38,3 +38,6 @@ python eval_generation.py -d refcoco -s google -g 1 --id slr --id2 ver1 -split t
 ```
 python eval_comprehension.py -d refcoco -s google -g 1 --id slr --id2 ver1 -split test --batch_size 1
 ```
+
+## notes
+- to load just a fraction of the data, go to file misc/DataLoader.py then change the line 80 ` if (cnt_ref_data < ... ): `
