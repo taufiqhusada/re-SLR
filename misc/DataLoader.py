@@ -123,15 +123,10 @@ class DataLoader:
         list_split = ['train', 'test', 'val']
         for split in list_split:
             for image_id in refer.getImgIds(ref_ids=refer.getRefIds(split=split)[:]):
-                split_names = []
-                for ref_id in self.Images[image_id]['ref_ids']:
-                    if self.Refs[ref_id]['split'] not in split_names:
-                        split_names.append(self.Refs[ref_id]['split'])
-                for split in split_names:
-                    if split not in self.img_split_ix:
-                        self.img_split_ix[split] = []
-                        self.img_iterators[split] = 0
-                    self.img_split_ix[split].append(image_id)
+                if split not in self.img_split_ix:
+                    self.img_split_ix[split] = []
+                    self.img_iterators[split] = 0
+                self.img_split_ix[split].append(image_id)
         for split in self.img_split_ix:
             print('assigned {} images to split {}'.format(len(self.img_split_ix[split]), split))
         
