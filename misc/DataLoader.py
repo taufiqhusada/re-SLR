@@ -107,28 +107,31 @@ class DataLoader:
         # sent iterators for each split
         self.sent_split_ix = {}
         self.sent_iterators = {}
-        for sent_id in self.Sentences:
-            split = self.sentToRef[sent_id]['split']
-            if split not in  self.sent_split_ix:
-                self.sent_split_ix[split] = []
-                self.sent_iterators[split] = 0
-            self.sent_split_ix[split].append(sent_id)
+        list_split = ['train', 'test', 'val']
+        for split in list_split:
+            for sent_id in refer.getAnnIds(ref_ids=refer.getRefIds(split=split)[:]):
+                if split not in  self.sent_split_ix:
+                    self.sent_split_ix[split] = []
+                    self.sent_iterators[split] = 0
+                self.sent_split_ix[split].append(sent_id)
         for split in self.sent_split_ix:
             print('assigned {} sents to split {}'.format(len(self.sent_split_ix[split]), split))
             
         #image iterators for each split
         self.img_split_ix = {}
         self.img_iterators = {}
-        for image_id in self.Images:
-            split_names = []
-            for ref_id in self.Images[image_id]['ref_ids']:
-                if self.Refs[ref_id]['split'] not in split_names:
-                    split_names.append(self.Refs[ref_id]['split'])
-            for split in split_names:
-                if split not in self.img_split_ix:
-                    self.img_split_ix[split] = []
-                    self.img_iterators[split] = 0
-                self.img_split_ix[split].append(image_id)
+        list_split = ['train', 'test', 'val']
+        for split in list_split:
+            for image_id in refer.getImgIds(ref_ids=refer.getRefIds(split=split)[:]):
+                split_names = []
+                for ref_id in self.Images[image_id]['ref_ids']:
+                    if self.Refs[ref_id]['split'] not in split_names:
+                        split_names.append(self.Refs[ref_id]['split'])
+                for split in split_names:
+                    if split not in self.img_split_ix:
+                        self.img_split_ix[split] = []
+                        self.img_iterators[split] = 0
+                    self.img_split_ix[split].append(image_id)
         for split in self.img_split_ix:
             print('assigned {} images to split {}'.format(len(self.img_split_ix[split]), split))
         
