@@ -72,8 +72,8 @@ class DataLoader:
         self.iterators = {}
         
         sys.path.insert(0, osp.join(ROOT_DIR, 'pyutils/refer2'))
-	    from refer import REFER
-	    refer = REFER('../dataset/anns/original', '_', opt['dataset'], opt['splitBy'])
+	from refer import REFER
+	refer = REFER('../dataset/anns/original', '_', opt['dataset'], opt['splitBy'])
     
         cnt_ref_data = 0
         list_split = ['train', 'test', 'val']
