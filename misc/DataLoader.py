@@ -71,9 +71,9 @@ class DataLoader:
         self.split_ix = {}
         self.iterators = {}
         
-        sys.path.insert(0, osp.join('../', 'pyutils/refer2'))
+        sys.path.insert(0, osp.join('/scratch2/thdaryan/re-SLR', 'pyutils/refer2'))
         from refer import REFER
-        refer = REFER('../dataset/anns/original', '_', opt['dataset'], opt['splitBy'])
+        refer = REFER('/scratch2/thdaryan/re-SLR/dataset/anns/original', '_', opt['dataset'], opt['splitBy'])
     
         cnt_ref_data = 0
         list_split = ['train', 'test', 'val']
