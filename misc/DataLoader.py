@@ -70,11 +70,15 @@ class DataLoader:
         # ref iterators for each split
         self.split_ix = {}
         self.iterators = {}
-        cnt_ref_data = 0
         
+        sys.path.insert(0, osp.join(ROOT_DIR, 'pyutils/refer2'))
+	    from refer import REFER
+	    refer = REFER('../dataset/anns/original', '_', opt['dataset'], opt['splitBy'])
+    
+        cnt_ref_data = 0
         list_split = ['train', 'test', 'val']
         for split in list_split:
-            for ref_id in self.getRefIds(split=split)[:]:
+            for ref_id in refer.getRefIds(split=split)[:]:
                 if split not in self.split_ix:
                     self.split_ix[split] = []
                     self.iterators[split] = 0
