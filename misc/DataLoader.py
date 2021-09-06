@@ -73,8 +73,6 @@ class DataLoader:
         cnt_ref_data = 0
         for ref_id in self.Refs:
             split = self.Refs[ref_id]['split']
-            if ('test' in split):
-                split = 'test'
             if split not in self.split_ix:
                 self.split_ix[split] = []
                 self.iterators[split] = 0
@@ -93,8 +91,6 @@ class DataLoader:
         self.sent_iterators = {}
         for sent_id in self.Sentences:
             split = self.sentToRef[sent_id]['split']
-            if ('test' in split):
-                split = 'test'
             if split not in  self.sent_split_ix:
                 self.sent_split_ix[split] = []
                 self.sent_iterators[split] = 0
@@ -108,12 +104,9 @@ class DataLoader:
         for image_id in self.Images:
             split_names = []
             for ref_id in self.Images[image_id]['ref_ids']:
-                split = self.Refs[ref_id]['split'] 
-                if split not in split_names:
+                if self.Refs[ref_id]['split'] not in split_names:
                     split_names.append(self.Refs[ref_id]['split'])
             for split in split_names:
-                if ('test' in split):
-                    split = 'test'
                 if split not in self.img_split_ix:
                     self.img_split_ix[split] = []
                     self.img_iterators[split] = 0
