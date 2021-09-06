@@ -70,36 +70,20 @@ class DataLoader:
         # ref iterators for each split
         self.split_ix = {}
         self.iterators = {}
-        
-        sys.path.insert(0, osp.join('/scratch2/thdaryan/re-SLR', 'pyutils/refer2'))
-        from refer import REFER
-        refer = REFER('/scratch2/thdaryan/re-SLR/dataset/anns/original', '_', opt['dataset'], opt['splitBy'])
-    
         cnt_ref_data = 0
-        list_split = ['train', 'test', 'val']
-        for split in list_split:
-            for ref_id in refer.getRefIds(split=split)[:]:
-                if split not in self.split_ix:
-                    self.split_ix[split] = []
-                    self.iterators[split] = 0
-                if (split=='train'):
-                    if (cnt_ref_data < 40):     # load small fraction of the train data
-                        self.split_ix[split].append(ref_id) 
-                        cnt_ref_data += 1
-                else:
-                    self.split_ix[split].append(ref_id)
-        
-#         for ref_id in self.Refs:
-#             split = self.Refs[ref_id]['split']
-#             if split not in self.split_ix:
-#                 self.split_ix[split] = []
-#                 self.iterators[split] = 0
-#             if (split=='train'):
-#                 if (cnt_ref_data < 40):     # load small fraction of the train data
-#                     self.split_ix[split].append(ref_id) 
-#                     cnt_ref_data += 1
-#             else:
-#                 self.split_ix[split].append(ref_id)
+        for ref_id in self.Refs:
+            split = self.Refs[ref_id]['split']
+            if ('test' in split):
+                split = 'test'
+            if split not in self.split_ix:
+                self.split_ix[split] = []
+                self.iterators[split] = 0
+            if (split=='train'):
+                if (cnt_ref_data < 40):     # load small fraction of the train data
+                    self.split_ix[split].append(ref_id) 
+                    cnt_ref_data += 1
+            else:
+                self.split_ix[split].append(ref_id)
             
         for split in self.split_ix:
             print('assigned {} refs to split {}'.format(len(self.split_ix[split]), split))
@@ -107,22 +91,29 @@ class DataLoader:
         # sent iterators for each split
         self.sent_split_ix = {}
         self.sent_iterators = {}
-        list_split = ['train', 'test', 'val']
-        for split in list_split:
-            for sent_id in refer.getAnnIds(ref_ids=refer.getRefIds(split=split)[:]):
-                if split not in  self.sent_split_ix:
-                    self.sent_split_ix[split] = []
-                    self.sent_iterators[split] = 0
-                self.sent_split_ix[split].append(sent_id)
+        for sent_id in self.Sentences:
+            split = self.sentToRef[sent_id]['split']
+            if ('test' in split):
+                split = 'test'
+            if split not in  self.sent_split_ix:
+                self.sent_split_ix[split] = []
+                self.sent_iterators[split] = 0
+            self.sent_split_ix[split].append(sent_id)
         for split in self.sent_split_ix:
             print('assigned {} sents to split {}'.format(len(self.sent_split_ix[split]), split))
             
         #image iterators for each split
         self.img_split_ix = {}
         self.img_iterators = {}
-        list_split = ['train', 'test', 'val']
-        for split in list_split:
-            for image_id in refer.getImgIds(ref_ids=refer.getRefIds(split=split)[:]):
+        for image_id in self.Images:
+            split_names = []
+            for ref_id in self.Images[image_id]['ref_ids']:
+                split = self.Refs[ref_id]['split'] 
+                if split not in split_names:
+                    split_names.append(self.Refs[ref_id]['split'])
+            for split in split_names:
+                if ('test' in split):
+                    split = 'test'
                 if split not in self.img_split_ix:
                     self.img_split_ix[split] = []
                     self.img_iterators[split] = 0
